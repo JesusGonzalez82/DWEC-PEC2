@@ -1,95 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>PEC 2 Ejercicio 1 - Lista Usuarios Api Pública</title>
-    <!-- En esta práctica, construirás una aplicación web que obtenga y muestre una lista de
-usuarios desde una API pública.
-Objetivos:
-1. Obtener una lista de usuarios desde "https://jsonplaceholder.typicode.com/users"
-utilizando fetch().
-2. Mostrar los nombres, correos electrónicos y ciudades de los usuarios en una
-tabla.
-3. Al hacer clic en "Ver detalles", obtener información adicional del usuario
-seleccionado y mostrarla en pantalla.
-4. Manejar posibles errores en las solicitudes de red -->
-
-</head>
-<body>
+    <!-- En esta práctica, construirás una aplicación web que obtenga y muestre una lista de usuarios desde una API pública.
+          Objetivos:
+    1. Obtener una lista de usuarios desde "https://jsonplaceholder.typicode.com/users" utilizando fetch().
+    2. Mostrar los nombres, correos electrónicos y ciudades de los usuarios en una tabla.
+    3. Al hacer clic en "Ver detalles", obtener información adicional del usuario seleccionado y mostrarla en pantalla.
+    4. Manejar posibles errores en las solicitudes de red -->
+  </head>
+  <body>
     <h1>Listado de Usuarios</h1>
 
-    <table class="tablaResultados" style="display: none; ">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Correo Electronico</th>
-                <th>Ciudad</th>
-                <th>Accion</th>
-            </tr>
-        </thead>
-        <tbody id="tableUsuarios"></tbody>
+    <!-- Creamos la tabla, la tenemos oculta hasta que la llamemmos -->
+    <table class="tablaResultados" style="display: none">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo Electronico</th>
+          <th>Ciudad</th>
+          <th>Accion</th>
+        </tr>
+      </thead>
+      <tbody id="tableUsuarios"></tbody>
     </table>
 
     <div id="masDetalles"></div>
     <p id="mensaje"></p>
 
     <script>
-        // Función para mostrar los usuarios en la tabla
+      // Obtener los usuarios al cargar la página
+      fetch(`https://jsonplaceholder.typicode.com/users`)
+        .then((respuesta) => {
+          if (!respuesta.ok) throw new Error("Usuarios no encontrados");
+          return respuesta.json();
+        })
+        .then((data) => {
+          showUsuario(data);
+        })
+        .catch((error) => {
+          document.getElementById("mensaje").textContent = error.message;
+        });
 
-        function showUsuario(usuarios){
+      // Función para mostrar los usuarios en la tabla
+      function showUsuario(usuarios) {
+        const tabla = document.getElementById("tableUsuarios");
+        tabla.innerHTML = "";
 
-            const tabla = document.getElementById('tableUsuarios');
-            tabla.innerHTML = '';
-
-            usuarios.forEach(usuario => {
-            const fila = document.createElement('tr');
-            fila.innerHTML =`
+        usuarios.forEach((usuario) => {
+          const fila = document.createElement("tr");
+          fila.innerHTML = `
             <td>${usuario.name}</td>
             <td>${usuario.email}</td>
             <td>${usuario.address.city}</td>
             <td><button onclick="showDetails(${usuario.id})">Ver Detalles</button></td>
             `;
-            tabla.appendChild(fila);
+          tabla.appendChild(fila);
         });
 
-        document.querySelector('.tablaResultados').style.display = 'table';
-    }
+        document.querySelector(".tablaResultados").style.display = "table";
+      }
 
-    function showDetails(userID){
-            fetch(`https://jsonplaceholder.typicode.com/users/${userID}`)
-                .then (respuesta => {
-                    if (!respuesta.ok) throw new Error('Detalles no encontrados');
-                    return respuesta.json();
-                })
-                .then(data =>{
-                    const detalles = `
+    // Mostramos más detalles de los usuarios.
+      function showDetails(userID) {
+        fetch(`https://jsonplaceholder.typicode.com/users/${userID}`)
+          .then((respuesta) => {
+            if (!respuesta.ok) throw new Error("Detalles no encontrados");
+            return respuesta.json();
+          })
+          .then((data) => {
+            const detalles = `
                     <h2>Detalles del Usuario:</h2>
                     <p>Nombre: ${data.name}</p>
                     <p>Correo Electrónico: ${data.email}</p>
                     <p>Teléfono: ${data.phone}</p>
                     <p>Compañia: ${data.company.name}</p>
                 `;
-                document.getElementById('masDetalles').innerHTML = detalles;
-                })
-                .catch(error =>{
-                    document.getElementById('mensaje').textContent = error.message;
-                });
-        }
-
-        // Obtener los usuarios al cargar la página
-        fetch(`https://jsonplaceholder.typicode.com/users`)
-            .then(respuesta => {
-                if (!respuesta.ok) throw new Error ('Usuarios no encontrados');
-                return respuesta.json();
-            })
-            .then(data => {
-                showUsuario(data);
-            })
-            .catch(error =>{
-                document.getElementById('mensaje').textContent = error.message;
-            })
+            document.getElementById("masDetalles").innerHTML = detalles;
+          })
+          .catch((error) => {
+            document.getElementById("mensaje").textContent = error.message;
+          });
+      }
     </script>
-</body>
+  </body>
 </html>

@@ -4,12 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Document</title>
+    <title>PEC2 Ejercicio 2 - jgonzalez6499</title>
   </head>
+  <!-- Actividad 2
+En esta práctica, crearás una aplicación que permita buscar imágenes en la API de
+Unsplash.
+Objetivos:
+1. Capturar un término de búsqueda ingresado por el usuario.
+2. Capturar la cantidad de imágenes que se quieren mostrar.
+3. Hacer una solicitud a "https://api.unsplash.com/search/photos" usando fetch().
+4. Mostrar las imágenes obtenidas en la página.
+5. Manejar posibles errores en la solicitud. -->
   <body>
+    <h1>Selector de Fotografias</h1>
+    <div id="formulario">
     <input type="text" placeholder="Tema" id="tema">
-    <input type="text" placeholder="numfotos" id="numero">
+
+    <input type="number" min="0" placeholder="numfotos" id="numero">
     <button id="buscarBtn">Buscar</button>
+    <br><br>
+    </div>
 
     <script type="module" src="./imagenesJS.js"></script>
   </body>

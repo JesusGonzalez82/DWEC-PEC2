@@ -4,6 +4,8 @@ const apiKey = API_KEY_UNSPLASH;
 function showPhoto() {
     const foto = document.getElementById("tema").value;
     const num = document.getElementById("numero").value;
+
+  cleanPhoto();
     
     fetch(
       `https://api.unsplash.com/search/photos?query=${foto}&per_page=${num}`,
@@ -29,6 +31,10 @@ function showPhoto() {
       .catch((error) => {
         console.error("Error al obtener las fotos:", error);
       });
+  }
+
+  function cleanPhoto(){
+    document.querySelectorAll("img").forEach(img => img.remove());
   }
   document.getElementById('buscarBtn').addEventListener("click", showPhoto);
 
